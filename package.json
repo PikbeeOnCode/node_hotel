@@ -1,0 +1,17 @@
+{
+  "name": "node_tutorial",
+  "version": "1.0.0",
+  "description": "node tutorial ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "krish sipai",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "lodash": "^4.17.21",
+    "save": "^2.9.0"
+  }
+}
