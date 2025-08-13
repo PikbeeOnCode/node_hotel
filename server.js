@@ -80,7 +80,8 @@ const app = express();
 const db = require('./db');
 const personRoutes = require('./routes/personRoutes')
 const meniItemsRoutes =require('./routes/menuItemRoutes')
-
+require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 
 // Middleware
@@ -101,6 +102,7 @@ app.use('/person',personRoutes);
 app.use('/menu',meniItemsRoutes)
 
 
-app.listen(3000, () => {
+
+app.listen(PORT, () => {
     console.log('Port 3000 is listening!');
 });
