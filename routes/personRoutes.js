@@ -11,6 +11,7 @@ router.post('/', async (req, res) => {
         const response = await newPerson.save(); // save to DB
 
         console.log('Data saved:', response);
+        console.log('data recieved',data);
         res.status(200).json(response);
     } catch (err) {
         console.error('Error saving data:', err);
@@ -31,8 +32,8 @@ router.get('/',async(req,res)=>{
 
 router.get('/:worktype',async (req,res)=>{
     try{
-        const workType = req.params.worktype.toLocaleLowerCase(); //extract the work type from the parameters 
-        if(workType=="chef"|| workType == "manager"|| workType == "waiter"){
+        const workType = req.params.worktype; //extract the work type from the parameters 
+        if(workType=="chef"|| workType == "manager"|| workType == "worker"){
             const response = await Person.find({work:workType});
             console.log('data fetched about work');
             res.status(200).json(response)

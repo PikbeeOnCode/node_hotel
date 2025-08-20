@@ -79,13 +79,45 @@ const express = require('express');
 const app = express();
 const db = require('./db');
 const personRoutes = require('./routes/personRoutes')
-const meniItemsRoutes =require('./routes/menuItemRoutes')
+const menuItemsRoutes =require('./routes/menuItemRoutes')
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
+const passport = require('passport')
+const localStrategy = require('passport-local');
+const Person = require('./models/person');
+const localAuthMiddleware = passport.authenticate('local',{session: false})
 
 // Middleware
 app.use(bodyParser.json());
+const logRequest = (req,res,next) =>{
+    console.log(` At : [${new Date().toLocaleDateString()}] request made to : ${req.originalUrl}`);
+    next();  // move on to next phase 
+}
+
+passport.use( new localStrategy(
+    async (username,password,done)=>{
+    //  authentication logic here 
+    try {
+        console.log('recived credentials :',username,password);
+        const user = await Person.findOne({username,password});
+        if(!user){
+            return done(null,false,{message: "incorrect username"});
+        }
+
+        const isPasswordmatch = user.password == password ? true : false ;
+        if(isPasswordmatch){
+            return done(null,user);
+        }else{
+            return done(null,false,{message: " incorrect password "});      
+        }
+        
+    } catch (error) {
+        return done(error);
+    }
+}))
+
+app.use(logRequest);
 
 // Home route
 app.get('/', (req, res) => {
@@ -99,7 +131,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/person',personRoutes);
-app.use('/menu',meniItemsRoutes)
+app.use('/menu',menuItemsRoutes)
 
 
 
