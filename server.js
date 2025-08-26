@@ -7,6 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const passport = require('./auth');
+const { jwtAuthmiddleware } = require('./jwt');
 
 const localAuthMiddleware = passport.authenticate('local',{session: false})
 
@@ -32,7 +33,7 @@ app.get('/', (req, res) => {
 
 
 
-app.use('/person',localAuthMiddleware,personRoutes);
+app.use('/person',jwtAuthmiddleware,personRoutes);
 app.use('/menu',localAuthMiddleware,menuItemsRoutes)
 
 
